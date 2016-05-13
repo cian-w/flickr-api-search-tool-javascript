@@ -54,9 +54,6 @@ $(document).ready(function() {
 
 
 
-
-
-
 //Append new script to send JSON request to Flickr
 function fetchImages () {
   imgArray = [];
@@ -126,7 +123,7 @@ function jsonFlickrApi (data){
 
   $('.thumbnail').click(function() {
     var index = $(this).attr('id');
-    var mainImage = "<img id='current-main' src=" + imgArray[index] + ">";
+    var mainImage = "" + imgArray[index] + "";
     var currentImage = $('[name="current"]');
     currentImage.removeAttr('name');
     $(currentImage).animate({
@@ -137,7 +134,7 @@ function jsonFlickrApi (data){
     $(this).attr('name', 'current');
 
     slide();
-    $('#main-image').html(mainImage);
+    displayMainImage(mainImage);
   });
   slide();
 }
@@ -157,9 +154,9 @@ $(document).keydown(function(e){
 
 
 
-/*Change image, paremeter direction is either 1 or 0,
+/*Change image, paremeter 'direction' is either 1 or 0,
 if 1 go to next image, if 0 go to previous image, I had two functions
-moveRight() and moveLeft() but this created a lot of repetition so passing
+moveRight() and moveLeft() but this created a lot of duplication so passing
 in a value allowed me to use one function*/
 function changeImage(direction) {
   var currentImage = $('[name="current"]');
@@ -175,6 +172,7 @@ function changeImage(direction) {
     }
     var nextIndex = parseInt(next.attr('id'));
     var newMain = "<img id='current-main' src=" + imgArray[nextIndex] + ">";
+    var newMain = "" + imgArray[nextIndex] + "";
 
   } else if(direction == 0){
 
@@ -185,7 +183,7 @@ function changeImage(direction) {
     }
     var previousIndex = parseInt(previous.attr('id'));
     var newMain = "<img id='current-main'src=" + imgArray[previousIndex] + ">";
-
+    var newMain = "" + imgArray[previousIndex] + "";
   }
 
   currentImage.removeAttr('name');
@@ -196,20 +194,32 @@ function changeImage(direction) {
 
   slide();
 
-  $('#main-image').html(newMain);
-  //loadMain(newMain);
-
+  displayMainImage(newMain);
 }
 
-/*function loadMain(newMain) {
-  var newUrl = newMain.attr('src');
-  console.log(newUrl);
+
+/*Load new big image into main area, show loader gif until image
+is fully loaded*/
+function displayMainImage(newMainUrl) {
+  var newMain = new Image();
+  newMain.src = newMainUrl;
+
+
   $('#main-image').html("<img class='loader' src='img/main-load.gif' />");
-  $('#current-main').load(function(){
+
+  newMain.onload = function(){
     $('#main-image').html(newMain);
-    console.log(newMain);
-  });
-}*/
+    var h = $(newMain).width();
+    var w = $(newMain).height();
+
+    //Couldn't get this to work correctly
+    /*if(h > w) {
+      $(newMain).css({"height":"100%"});
+    } else {
+      $(newMain).css({"width":"100%"});
+    }*/
+  };
+}
 
 
 
