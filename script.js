@@ -209,15 +209,6 @@ function displayMainImage(newMainUrl) {
 
   newMain.onload = function(){
     $('#main-image').html(newMain);
-    var h = $(newMain).width();
-    var w = $(newMain).height();
-
-    //Couldn't get this to work correctly
-    /*if(h > w) {
-      $(newMain).css({"height":"100%"});
-    } else {
-      $(newMain).css({"width":"100%"});
-    }*/
   };
 }
 
